@@ -1,67 +1,57 @@
-const contenedor = document.getElementById("corazones-container");
-const audio = document.getElementById("musica");
-const pantallainicial = document.getElementById("pantalla-inicial");
-const botoniniciar = document.getElementById("boton-iniciar");
-const textoprincipal = document.getElementById("texto-principal");
+const container = document.getElementById("hearts-container");
+const audio = document.getElementById("music");
+const startScreen = document.getElementById("start-screen");
+const startButton = document.getElementById("start-button");
+const mainText = document.querySelector("h1");
 
-const totalcorazones = 30;
-const separacion = 8; // % mínimo de separación para los corazones
-const posiciones = [];
+const totalHearts = 30;
+const minSeparation = 8; // Minimum % of horizontal separation between hearts
+const usedPositions = [];
 
-// Función para generar posición horizontal sin que se amontonen
-function generarPosicion() {
-  let intentos = 0;
-  while (intentos < 100) {
-    const nuevoleft = Math.random() * 90; // no 100 para no salirse
-    const muyCerca = posiciones.some(pos => Math.abs(pos - nuevoleft) < separacion);
-    if (!muyCerca) {
-      posiciones.push(nuevoleft);
-      return nuevoleft;
+// Generate a random horizontal position with spacing to avoid overlapping
+function generatePosition() {
+  let attempts = 0;
+  while (attempts < 100) {
+    const newLeft = Math.random() * 90;
+    const tooClose = usedPositions.some(pos => Math.abs(pos - newLeft) < minSeparation);
+    if (!tooClose) {
+      usedPositions.push(newLeft);
+      return newLeft;
     }
-    intentos++;
+    attempts++;
   }
-  return Math.random() * 90; // si no logra evitar choques lo coloca igual
+  return Math.random() * 90;
 }
 
-// Crear los corazones con estructura anidada
-for (let i = 0; i < totalcorazones; i++) {
-  // Contenedor externo: anima el movimiento vertical (flotar)
+// Create floating heart elements
+for (let i = 0; i < totalHearts; i++) {
   const wrapper = document.createElement("div");
-  wrapper.className = "corazon-wrapper";
+  wrapper.className = "heart-wrapper";
 
-  // Contenedor interno: anima el latido (opcional)
-  const corazon = document.createElement("div");
-  corazon.className = "corazon";
+  const heart = document.createElement("div");
+  heart.className = "heart";
 
-  // 40% de los corazones con latido suave
   if (Math.random() < 0.4) {
-    corazon.classList.add("latido");
+    heart.classList.add("beating");
   }
 
-  // Posición horizontal aleatoria sin solaparse
-  const left = generarPosicion();
+  const left = generatePosition();
   wrapper.style.left = `${left}%`;
 
-  // Configurar duración y delay de la animación
-  const duracion = 8000 + Math.random() * 4000;
+  const duration = 8000 + Math.random() * 4000;
   const delay = Math.random() * 5;
-  wrapper.style.animationDuration = `${duracion}ms`;
+  wrapper.style.animationDuration = `${duration}ms`;
   wrapper.style.animationDelay = `${delay}s`;
 
-  // Insertar corazón dentro del wrapper
-  wrapper.appendChild(corazon);
-  contenedor.appendChild(wrapper);
+  wrapper.appendChild(heart);
+  container.appendChild(wrapper);
 }
 
-// Función para iniciar música y animación al primer click
-function iniciarMusicaYAnimacion() {
+// Start everything after clicking the button
+startButton.addEventListener("click", () => {
+  startScreen.style.display = "none";
   audio.play().catch(() => {
-    console.log("Reproducción automática bloqueada, esperando interacción.");
+    console.log("Autoplay blocked, waiting for user interaction.");
   });
-  document.querySelector("h1").classList.add("pulsando");
-  // Remover el listener para que sólo se dispare una vez
-  document.removeEventListener("click", iniciarMusicaYAnimacion);
-}
-
-// Espera a que el usuario haga click para iniciar la música y animación
-document.addEventListener("click", iniciarMusicaYAnimacion);
+  mainText.classList.add("pulsing");
+});

@@ -7,8 +7,8 @@ body {
   text-align: center;
 }
 
-/*Pantalla inicial*/
-#pantalla-incial{
+/* Start screen */
+#start-screen {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
   background: linear-gradient(to top, #ffdde1, #ee9ca7);
@@ -18,7 +18,7 @@ body {
   z-index: 10;
 }
 
-#boton-iniciar{
+#start-button {
   font-size: 2em;
   padding: 20px 40px;
   cursor: pointer;
@@ -31,11 +31,11 @@ body {
   transition: transform 0.3s ease;
 }
 
-#boton-iniciar:hover{
+#start-button:hover {
   transform: scale(1.1);
 }
 
-/*Texto*/
+/* Heading text */
 h1 {
   font-size: 5em;
   color: #e91e63;
@@ -48,20 +48,21 @@ h1 {
   font-family: 'Great Vibes', cursive;
 }
 
-h1.pulsando {
-  animation: fadeIn 3s ease-out forwards, pulso 2s ease-in-out infinite;
+h1.pulsing {
+  animation: fadeIn 3s ease-out forwards, pulse 2s ease-in-out infinite;
   animation-delay: 3s, 6s;
 }
 
-.corazon-wrapper {
+/* Heart wrapper */
+.heart-wrapper {
   position: absolute;
   bottom: 0;
   opacity: 0;
-  animation: flotarArriba 10s ease-in infinite;
+  animation: floatUp 10s ease-in infinite;
 }
 
-/*Corazones y animaciones*/
-.corazon {
+/* Heart shape */
+.heart {
   width: 50px;
   height: 40px;
   background-color: #ff4d6d;
@@ -69,8 +70,8 @@ h1.pulsando {
   position: relative;
 }
 
-.corazon::before,
-.corazon::after {
+.heart::before,
+.heart::after {
   content: "";
   position: absolute;
   width: 50px;
@@ -79,20 +80,22 @@ h1.pulsando {
   border-radius: 50%;
 }
 
-.corazon::before {
+.heart::before {
   top: -25px;
   left: 0;
 }
 
-.corazon::after {
+.heart::after {
   left: 25px;
   top: 0;
 }
 
-.latido {
-  animation: latido 2s ease-in-out infinite;
+/* Heartbeat effect */
+.beating {
+  animation: heartbeat 2s ease-in-out infinite;
 }
 
+/* Keyframes */
 @keyframes fadeIn {
   to {
     opacity: 1;
@@ -100,7 +103,7 @@ h1.pulsando {
   }
 }
 
-@keyframes flotarArriba {
+@keyframes floatUp {
   0% {
     transform: translateY(0);
     opacity: 0;
@@ -114,7 +117,7 @@ h1.pulsando {
   }
 }
 
-@keyframes latido {
+@keyframes heartbeat {
   0%, 100% {
     transform: scale(1) rotate(-45deg);
   }
@@ -123,7 +126,7 @@ h1.pulsando {
   }
 }
 
-@keyframes pulso{
+@keyframes pulse {
   0%, 100% {
     transform: scale(1.05);
   }
