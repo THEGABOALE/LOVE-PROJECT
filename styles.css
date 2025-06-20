@@ -1,0 +1,133 @@
+body {
+  margin: 0;
+  background: linear-gradient(to top, #ffdde1, #ee9ca7);
+  font-family: 'Segoe UI', sans-serif;
+  overflow: hidden;
+  height: 100vh;
+  text-align: center;
+}
+
+/*Pantalla inicial*/
+#pantalla-incial{
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(to top, #ffdde1, #ee9ca7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+#boton-iniciar{
+  font-size: 2em;
+  padding: 20px 40px;
+  cursor: pointer;
+  border: none;
+  border-radius: 15px;
+  background-color: #e91e63;
+  color: white;
+  font-family: 'Great Vibes', cursive;
+  box-shadow: 0 0 15px #e91e63;
+  transition: transform 0.3s ease;
+}
+
+#boton-iniciar:hover{
+  transform: scale(1.1);
+}
+
+/*Texto*/
+h1 {
+  font-size: 5em;
+  color: #e91e63;
+  font-weight: bold;
+  margin-top: 15vh;
+  text-shadow: 2px 2px #fff0f5;
+  opacity: 0;
+  animation: fadeIn 3s ease-out forwards;
+  animation-delay: 3s;
+  font-family: 'Great Vibes', cursive;
+}
+
+h1.pulsando {
+  animation: fadeIn 3s ease-out forwards, pulso 2s ease-in-out infinite;
+  animation-delay: 3s, 6s;
+}
+
+.corazon-wrapper {
+  position: absolute;
+  bottom: 0;
+  opacity: 0;
+  animation: flotarArriba 10s ease-in infinite;
+}
+
+/*Corazones y animaciones*/
+.corazon {
+  width: 50px;
+  height: 40px;
+  background-color: #ff4d6d;
+  transform: rotate(-45deg);
+  position: relative;
+}
+
+.corazon::before,
+.corazon::after {
+  content: "";
+  position: absolute;
+  width: 50px;
+  height: 40px;
+  background-color: #ff4d6d;
+  border-radius: 50%;
+}
+
+.corazon::before {
+  top: -25px;
+  left: 0;
+}
+
+.corazon::after {
+  left: 25px;
+  top: 0;
+}
+
+.latido {
+  animation: latido 2s ease-in-out infinite;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes flotarArriba {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-120vh);
+    opacity: 0;
+  }
+}
+
+@keyframes latido {
+  0%, 100% {
+    transform: scale(1) rotate(-45deg);
+  }
+  50% {
+    transform: scale(1.1) rotate(-45deg);
+  }
+}
+
+@keyframes pulso{
+  0%, 100% {
+    transform: scale(1.05);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
