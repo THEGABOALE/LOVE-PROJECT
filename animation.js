@@ -1,9 +1,77 @@
 // Get DOM elements
 const container = document.getElementById("hearts-container");
 const audio = document.getElementById("music");
+const starContainer = document.getElementById("stars-container");
 const startScreen = document.getElementById("start-screen");
 const startButton = document.getElementById("start-button");
 const mainText = document.getElementById("main-title");
+
+//Generate random stars
+function createStars(amount = 120) {
+  for (let i = 0; i < amount; i++) {
+    const star = document.createElement("div");
+    star.classList.add("star");
+
+    star.style.top = `${Math.random() * 100}%`;
+    star.style.left = `${Math.random() * 100}%`;
+    const size = Math.random() * 2 + 1;
+    star.style.width = `${size}px`;
+    star.style.height = `${size}px`;
+    star.style.animationDuration = `${1 + Math.random() * 2}s`;
+    star.style.opacity = Math.random();
+
+    starContainer.appendChild(star);
+  }
+}
+
+//Generate one shooting star
+function createShootingStar() {
+  const star = document.createElement("div");
+  star.className = "shooting-star";
+
+  const startX = Math.random() * (window.innerWidth - 200);  
+  const startY = -20;
+
+  star.style.left = `${startX}px`;
+  star.style.top = `${startY}px`;
+
+  starContainer.appendChild(star);
+
+  star.animate([
+    { transform: "translate(0, 0) rotate(-45deg)", opacity: 1 },
+    { transform: "translate(-400px, 400px) rotate(-45deg)", opacity: 0 }
+  ], {
+    duration: 700,
+    easing: "ease-out",
+    fill: "forwards"
+  });
+
+  setTimeout(() => star.remove(), 1000);
+}
+
+// Interval to launch shooting stars
+let shootingStarInterval;
+
+function startShootingStars() {
+  const loop = () => {
+    const count = Math.floor(Math.random() * 3) + 1;
+
+    for (let i = 0; i < count; i++) {
+      setTimeout(() => {
+        createShootingStar(i);
+      }, i * 800);
+    }
+
+    const delay = Math.random() * 3000 + 3000; 
+    setTimeout(loop, delay);
+  };
+
+  loop();
+}
+
+function stopShootingStars() {
+  clearInterval(shootingStarInterval);
+}
 
 // Heart configuration
 const totalHearts = 30;
@@ -52,19 +120,22 @@ function createHearts() {
   }
 }
 
-// Start animation and music on button click
-startButton.addEventListener("click", () => {
-  startScreen.style.display = "none"; // Hide intro screen
+// Init stars and animation
+createStars();
+startShootingStars();
 
-  // Play background music
+// On button click
+startButton.addEventListener("click", () => {
+  startScreen.style.display = "none";
+  stopShootingStars();
+  starContainer.innerHTML = "";
+
   audio.play().catch(() => {
     console.log("Autoplay blocked");
   });
 
-  // Show and animate main text
   mainText.style.display = "block";
   mainText.classList.add("pulsing");
 
-  // Start heart animations
   createHearts();
 });

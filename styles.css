@@ -10,82 +10,31 @@ body {
 }
 
 /*Stars*/
-.stars, .stars2, .stars3, .shooting-stars {
-  position: fixed;
-  top: 0; left: 0;
+#stars-container {
+  position: absolute;
   width: 100%;
   height: 100%;
-  pointer-events: none;
+  overflow: hidden;
   z-index: 0;
 }
 
-#stars {
-  background: transparent;
-  box-shadow: 10px 20px 1px #fff,
-    50px 80px 1.5px #eee,
-    120px 150px 1px #ccc,
-    200px 90px 1px #ddd,
-    250px 180px 1.5px #fff,
-    300px 120px 1px #eee,
-    350px 200px 1px #ccc,
-    400px 150px 1.5px #ddd,
-    450px 100px 1px #fff,
-    500px 180px 1px #eee;
-  animation: twinkle 6s linear infinite;
-  opacity: 0.6;
-}
-
-#stars2 {
-  background: transparent;
-  box-shadow:
-    30px 40px 2px #fff,
-    80px 60px 1.8px #eee,
-    140px 90px 2px #ccc,
-    210px 130px 1.7px #ddd,
-    280px 110px 2px #fff,
-    320px 160px 1.8px #eee,
-    370px 140px 2px #ccc,
-    430px 170px 1.6px #ddd,
-    480px 110px 2px #fff,
-    520px 150px 1.7px #eee;
-  animation: twinkle 8s linear infinite;
-  opacity: 0.4;
-}
-
-#stars3 {
-  background: transparent;
-  box-shadow:
-    100px 60px 3px #fff,
-    200px 90px 3.5px #eee,
-    300px 130px 3px #ccc,
-    400px 80px 3.5px #ddd,
-    500px 120px 3px #fff;
-  animation: twinkle 10s linear infinite;
-  opacity: 0.3;
-}
-
-/*Shooting Star*/
-.shooting-stars {
-  background: transparent;
-}
-
-.shooting-stars::before, .shooting-stars::after {
-  content: '';
+.star {
   position: absolute;
-  top: -10%; left: 80%; 
+  background-color: white;
+  border-radius: 50%;
+  opacity: 0.8;
+  animation: starTwinkle 2s infinite ease-in-out alternate;
+}
+
+.shooting-star {
+  position: absolute;
   width: 80px;
   height: 2px;
-  background: linear-gradient(-45deg, white, transparent);
-  border-radius: 50%;
+  background: linear-gradient(90deg, white, transparent);
   opacity: 0;
-  animation: shootingStars 8s linear infinite;
-}
-
-.shooting-stars::after {
-  top: 10%; left: 60%;
-  width: 120px;
-  height: 3px;
-  animation-delay: 4s;
+  transform: rotate(45deg);
+  pointer-events: none;
+  z-index: 1;
 }
 
 /* Start screen */
@@ -210,23 +159,9 @@ body {
 
 /* Keyframes */
 
-@keyframes twinkle {
-  0%, 100% { opacity: 0.7; }
-  50% { opacity: 0.3; }
-}
-
-@keyframes shootingStars {
-  0% {
-    transform: translateX(0) translateY(0) rotate(45deg);
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(-100vw) translateY(100vh) rotate(45);
-    opacity: 0;
-  }
+@keyframes starTwinkle {
+  0% { opacity: 0.4; transform: scale(0.9); }
+  100% { opacity: 1; transform: scale(1.2); }
 }
 
 @keyframes moonGlow {
