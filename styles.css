@@ -9,6 +9,85 @@ body {
   position: relative;
 }
 
+/*Stars*/
+.stars, .stars2, .stars3, .shooting-stars {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+#stars {
+  background: transparent;
+  box-shadow: 10px 20px 1px #fff,
+    50px 80px 1.5px #eee,
+    120px 150px 1px #ccc,
+    200px 90px 1px #ddd,
+    250px 180px 1.5px #fff,
+    300px 120px 1px #eee,
+    350px 200px 1px #ccc,
+    400px 150px 1.5px #ddd,
+    450px 100px 1px #fff,
+    500px 180px 1px #eee;
+  animation: twinkle 6s linear infinite;
+  opacity: 0.6;
+}
+
+#stars2 {
+  background: transparent;
+  box-shadow:
+    30px 40px 2px #fff,
+    80px 60px 1.8px #eee,
+    140px 90px 2px #ccc,
+    210px 130px 1.7px #ddd,
+    280px 110px 2px #fff,
+    320px 160px 1.8px #eee,
+    370px 140px 2px #ccc,
+    430px 170px 1.6px #ddd,
+    480px 110px 2px #fff,
+    520px 150px 1.7px #eee;
+  animation: twinkle 8s linear infinite;
+  opacity: 0.4;
+}
+
+#stars3 {
+  background: transparent;
+  box-shadow:
+    100px 60px 3px #fff,
+    200px 90px 3.5px #eee,
+    300px 130px 3px #ccc,
+    400px 80px 3.5px #ddd,
+    500px 120px 3px #fff;
+  animation: twinkle 10s linear infinite;
+  opacity: 0.3;
+}
+
+/*Shooting Star*/
+.shooting-stars {
+  background: transparent;
+}
+
+.shooting-stars::before, .shooting-stars::after {
+  content: '';
+  position: absolute;
+  top: -10%; left: 80%; 
+  width: 80px;
+  height: 2px;
+  background: linear-gradient(-45deg, white, transparent);
+  border-radius: 50%;
+  opacity: 0;
+  animation: shootingStars 8s linear infinite;
+}
+
+.shooting-stars::after {
+  top: 10%; left: 60%;
+  width: 120px;
+  height: 3px;
+  animation-delay: 4s;
+}
+
 /* Start screen */
 #start-screen {
   position: fixed;
@@ -34,20 +113,6 @@ body {
   box-shadow: 0 0 30px 10px rgba(255, 255, 200, 0.3);
   z-index: 0;
   animation: moonGlow 6s ease-in-out infinite;
-}
-
-#start-screen::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-image: radial-gradient(white 1px, transparent 1px), radial-gradient(white 1px, transparent 1px);
-  background-size: 40px 40px, 80px 80px;
-  background-position: 0 0, 20px 20px;
-  animation: twinkling 6s ease-in-out infinite;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.5;
 }
 
 .start-message{
@@ -144,9 +209,24 @@ body {
 }
 
 /* Keyframes */
-@keyframes twinkling {
-  0%, 100% { opacity: 0.6; }
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.7; }
   50% { opacity: 0.3; }
+}
+
+@keyframes shootingStars {
+  0% {
+    transform: translateX(0) translateY(0) rotate(45deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-100vw) translateY(100vh) rotate(45);
+    opacity: 0;
+  }
 }
 
 @keyframes moonGlow {
