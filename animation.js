@@ -8,9 +8,16 @@ const mainText = document.getElementById("main-title");
 
 //Generate random stars
 function createStars(amount = 120) {
+  const starTypes = ["star-soft", "star-blueish", ""];
+
   for (let i = 0; i < amount; i++) {
     const star = document.createElement("div");
     star.classList.add("star");
+
+    const randomType = starTypes[Math.floor(Math.random() * starTypes.length)];
+    if(randomType) {
+      star.classList.add(randomType)
+    }
 
     star.style.top = `${Math.random() * 100}%`;
     star.style.left = `${Math.random() * 100}%`;
@@ -24,13 +31,13 @@ function createStars(amount = 120) {
   }
 }
 
-//Generate one shooting star
+//Generate shooting star
 function createShootingStar() {
   const star = document.createElement("div");
   star.className = "shooting-star";
 
-  const startX = Math.random() * (window.innerWidth - 200);  
-  const startY = -20;
+  const startX = Math.random() * window.innerWidth;  
+  const startY = -10;
 
   star.style.left = `${startX}px`;
   star.style.top = `${startY}px`;
@@ -39,14 +46,14 @@ function createShootingStar() {
 
   star.animate([
     { transform: "translate(0, 0) rotate(-45deg)", opacity: 1 },
-    { transform: "translate(-400px, 400px) rotate(-45deg)", opacity: 0 }
+    { transform: "translate(-800px, 800px) rotate(-45deg)", opacity: 0 }
   ], {
-    duration: 700,
+    duration: 600,
     easing: "ease-out",
     fill: "forwards"
   });
 
-  setTimeout(() => star.remove(), 1000);
+  setTimeout(() => star.remove(), 700);
 }
 
 // Interval to launch shooting stars
@@ -54,7 +61,7 @@ let shootingStarInterval;
 
 function startShootingStars() {
   const loop = () => {
-    const count = Math.floor(Math.random() * 3) + 1;
+    const count = Math.floor(Math.random() * 5) + 1;
 
     for (let i = 0; i < count; i++) {
       setTimeout(() => {
@@ -72,6 +79,85 @@ function startShootingStars() {
 function stopShootingStars() {
   clearInterval(shootingStarInterval);
 }
+
+//Constellations lines
+let constellationOpacity = 0.2;
+let opacityDirection = 1;
+
+const increment = 0.0005; 
+
+function drawConstellations() {
+  const canvas = document.getElementById("constellation-canvas");
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const stars = Array.from(document.querySelectorAll(".star"));
+
+  const starPositions = stars.map(star => {
+    const rect = star.getBoundingClientRect();
+    return {
+      x: rect.left + rect.width / 2,
+      y: rect.top + rect.height / 2
+    };
+  });
+
+  constellationOpacity += increment * opacityDirection;
+  if (constellationOpacity >= 0.4) opacityDirection = -1;
+  if (constellationOpacity <= 0.15) opacityDirection = 1;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const starColor = [160, 200, 255];
+  const endColor = [190, 160, 255];
+
+  const mixColor = starColor.map((c, i) =>
+    Math.round(c + (endColor[i] + c) * ((constellationOpacity - 0.15) / 0.25))
+  );
+
+  const colorString = `rgba(${mixColor[0]}, ${mixColor[1]}, ${mixColor[2]}, ${constellationOpacity.toFixed(2)})`;
+
+  ctx.strokeStyle = colorString;
+  ctx.lineWidth = 0.6;
+  ctx.shadowColor = `rgba(${mixColor[0]}, ${mixColor[1]}, ${mixColor[2]}, 0.7)`;
+  ctx.shadowBlur = 4;
+
+  const Maxconnections = 2;
+
+  for (let i = 0; i < starPositions.length; i++) {
+    const a = starPositions[i];
+    let connections = 0;
+    for (let j = 0; j < starPositions.length; j++) {
+      if (i === j) continue;
+      const b = starPositions[j];
+
+      const inCornerA = a.x < canvas.width * 0.3 && a.y < canvas.height * 0.4;
+      const inCornerB = b.x < canvas.width * 0.3 && b.y < canvas.height * 0.4;
+
+      if (inCornerA && inCornerB) {
+        const dist = Math.hypot(a.x - b.x, a.y - b.y);
+        if (dist < 100) {
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+
+          connections++;
+          if (connections >= Maxconnections) break;
+        }
+      }
+    }
+  }
+}
+
+
+window.addEventListener("load", () => {
+  setTimeout(drawConstellations, 100)
+});
+
+window.addEventListener("resize", drawConstellations);
 
 // Heart configuration
 const totalHearts = 30;
@@ -121,7 +207,12 @@ function createHearts() {
 }
 
 // Init stars and animation
-createStars();
+createStars(400);
+function animateConstellations() {
+  drawConstellations();
+  requestAnimationFrame(animateConstellations);
+}
+animateConstellations();
 startShootingStars();
 
 // On button click
