@@ -10,7 +10,7 @@ body {
 }
 
 /*Stars*/
-#stars-container {
+#stars-background {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -18,10 +18,19 @@ body {
   z-index: 0;
 }
 
+#stars-constellation {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
+
 .star {
   position: absolute;
   background-color: white;
   border-radius: 50%;
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
   opacity: 0.8;
   animation: starTwinkle 2s infinite ease-in-out alternate;
 }
@@ -53,13 +62,13 @@ body {
   width: 100%;
   height: 100%;
   top: 0; left: 0;
-  z-index: 1;
+  z-index: 2;
   pointer-events: none;
 }
 
 /* Start screen */
 #start-screen {
-  position: fixed;
+  position: relative;
   z-index: 9999;
   width: 100%;
   height: 100%;
@@ -71,54 +80,54 @@ body {
   overflow: hidden;
 }
 
-#start-screen::before {
-  content: "";
+#moon {
   position: absolute;
-  top: 50px; right: 80px;
-  width: 120px;
-  height: 120px;
-  background: radial-gradient(circle at 30% 30%, #fefcea, #f1da36);
+  top: 50px; right: 40px;
+  width: 180px;
+  height: 180px;
   border-radius: 50%;
-  box-shadow: 0 0 30px 10px rgba(255, 255, 200, 0.3);
-  z-index: 0;
-  animation: moonGlow 6s ease-in-out infinite;
+  overflow: hidden;
+  background-color: #b0b0b0;
+  box-shadow: 
+  0 0 20px 6px rgba(255, 255, 255, 0.15),
+  inset -10px -10px 25px rgba(255, 255, 255, 0.3),
+  inset 8px 8px 20px rgba(0, 0, 0, 0.2);
+  filter: drop-shadow(0 0 6px rgba(255, 255, 220, 0.3));
+  animation: moonGlow 10s ease-in-out infinite alternate;
+  z-index: 10;
 }
 
-.start-message{
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  background: rgba(20, 20, 30, 0.75);
-  padding: 40px 60px;
-  border-radius: 20px;
-  box-shadow: 0 0 40px rgba(255, 255, 255, 0.05);
+.moon-surface {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-image: url("https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/lroc_color_poles_1k.jpg");
+  background-size: 230% auto;
+  background-repeat: no-repeat;
+  background-position: center;
+  animation: spinSurface 60s linear infinite;
+}
+
+#moon::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: 
+    radial-gradient(circle at 30% 30%, rgba(0, 0, 0, 0.1) 6%, transparent 12%),
+    radial-gradient(circle at 65% 60%, rgba(0, 0, 0, 0.08) 5.5%, transparent 11%),
+    radial-gradient(circle at 30% 70%, rgba(0, 0, 0, 0.07) 5%, transparent 10%);
+  pointer-events: none;
 }
 
 .start-message h2 {
-  font-family: 'Segoe UI', sans-serif;
-  font-size: 2.3em;
-  color: #d2cfff;
+  font-family: 'Kapakana', cursive;
+  font-size: 6.4em;
+  color: #c8c8c8;
   margin-bottom: 20px;
-  text-shadow: 0 0 12px #a89af3, 0 0 25px #7d6ef1;
-}
-
-#start-button {
-  font-size: 1.4em;
-  padding: 12px 36px;
-  cursor: pointer;
-  border: 2px solid #ff88a4;
-  border-radius: 25px;
-  background: radial-gradient(circle at center, #ff4d6d, #c63d56);
-  color: #fff;
-  box-shadow: 0 0 15px rgba(255, 77, 109, 0.6), 0 0 30px rgba(255, 77, 109, 0.2);
-  text-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
-  transition: all 0.3s ease, box-shadow 0.4s ease-in-out;
-}
-
-#start-button:hover {
-  transform: scale(1.08);
-  background: radial-gradient(circle at center, #ff5e80, #e04860);
-  box-shadow: 0 0 20px rgba(255, 100, 130, 0.8), 0 0 40px rgba(255, 100, 130, 0.4);
+  text-shadow: 0 0 12px #a3cef1, 0 0 25px #6096ba;
 }
 
 /* Heading text */
@@ -203,8 +212,34 @@ body {
 }
 
 @keyframes moonGlow {
-  0%, 100% { box-shadow: 0 0 30px 10px rgba(255, 255, 200, 0.3); }
-  50% { box-shadow: 0 0 40px 15px rgba(255, 255, 200, 0.5); }
+  0% {
+    box-shadow: 
+    0 0 15px 5px rgba(255, 255, 220, 0.2),
+    inset -10px -10px 25px rgba(255, 255, 255, 0.2),
+    inset 8px 8px 20px rgba(0, 0, 0, 0.15);
+  }
+  50% {
+    box-shadow: 
+    0 0 30px 10px rgba(255, 255, 220, 0.5),
+    inset -10px -10px 35px rgba(255, 255, 255, 0.4),
+    inset 8px 8px 30px rgba(0, 0, 0, 0.3);
+  }
+  100% {
+    box-shadow: 
+    0 0 15px 5px rgba(255, 255, 220, 0.2),
+    inset -10px -10px 25px rgba(255, 255, 255, 0.2),
+    inset 8px 8px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+}
+
+@keyframes spinSurface {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 100% center;
+  }
 }
 
 @keyframes fadeIn {
